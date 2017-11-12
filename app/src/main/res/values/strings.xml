@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Coding Challenge</string>
+
+
+    <!--Facebook app ID-->
+    <string name="facebook_app_id">138819380211130</string>
+    <string name="fb_login_protocol_scheme">fb138819380211130</string>
+
+</resources>
