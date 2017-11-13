@@ -25,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
 
-        // Test if the user is already logged in
+        // Test if the User is already logged in
         if (AccessToken.getCurrentAccessToken() != null){
             goToMainScreen();
         }
