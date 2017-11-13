@@ -15,6 +15,11 @@ public class Photo {
         this.id = id;
     }
 
+    public Photo(String lowResUrl, String id) {
+        this.lowResUrl = lowResUrl;
+        this.id = id;
+    }
+
     public Photo() {
     }
 

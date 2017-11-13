@@ -16,12 +16,12 @@ import java.util.ArrayList;
 import tk.adilkh.codingchallenge.R;
 import tk.adilkh.codingchallenge.models.Album;
 
-public class List_Adapter extends BaseAdapter {
+public class Grid_Adapter extends BaseAdapter {
 
     Context c ;
     ArrayList<Album> albums ;
 
-    public List_Adapter( Context c, ArrayList<Album> albums) {
+    public Grid_Adapter(Context c, ArrayList<Album> albums) {
         this.albums = albums ;
         this.c = c;
     }
@@ -38,39 +38,33 @@ public class List_Adapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return Integer.parseInt(albums.get(position).getId()) ;
+        return Long.parseLong(albums.get(position).getId());
     }
 
     @Override
     public View getView(int position, View convertview, ViewGroup viewGroup) {
+        // Recycle the the old Views
         ViewHolder holder;
         if(convertview == null) {
             convertview = LayoutInflater.from(c).inflate(R.layout.list_item_layout,viewGroup,false);
             holder = new ViewHolder();
-            holder._bg = (ImageView) convertview.findViewById(R.id.img_background);
             holder._grid_item_image = (ImageView) convertview.findViewById(R.id.grid_item_image);
             holder._grid_item_title = (TextView) convertview.findViewById(R.id.grid_item_title);
-            holder._vw_blayer =  convertview.findViewById(R.id.vw_blacklayer);
             convertview.setTag(holder);
         } else {
             holder = (ViewHolder) convertview.getTag();
         }
+
+        // Set the Album Title
         holder._grid_item_title.setText(albums.get(position).getName());
-        Picasso.with(c)
-                .load(albums.get(position).getUrl())
-                .placeholder(R.drawable.image_placeholder)
-                .error(R.drawable.image_placeholder)
-                .into( holder._bg);
+        // Set the Album Image
         Picasso.with(c)
                 .load(albums.get(position).getUrl())
                 .placeholder(R.drawable.image_placeholder)
                 .error(R.drawable.image_placeholder)
                 .into(holder._grid_item_image);
 
-        ObjectAnimator fade = ObjectAnimator.ofFloat(holder._vw_blayer, View.ALPHA, 1f,.3f);
-        fade.setDuration(500);
-        fade.setInterpolator(new LinearInterpolator());
-        fade.start();
+
         return convertview;
     }
 

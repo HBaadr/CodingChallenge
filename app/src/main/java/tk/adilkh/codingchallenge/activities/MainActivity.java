@@ -3,34 +3,29 @@ package tk.adilkh.codingchallenge.activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.Button;
+import android.widget.GridView;
 import android.widget.TextView;
-
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
-
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
-
 import tk.adilkh.codingchallenge.R;
-import tk.adilkh.codingchallenge.adapters.List_Adapter;
+import tk.adilkh.codingchallenge.adapters.Grid_Adapter;
 import tk.adilkh.codingchallenge.models.Album;
-import tk.adilkh.codingchallenge.models.Photo;
 
 public class MainActivity extends AppCompatActivity {
 
     TextView userName ;
-    ListView listview ;
-    List_Adapter list_Adapter ;;
+    GridView albumGrid ;
+    Grid_Adapter gridAdapter ;
+    Button btnLogout ;
     private String UserId;
 
     @Override
@@ -46,31 +41,41 @@ public class MainActivity extends AppCompatActivity {
         // / Get the User Id of the User that logged in to be used later
         UserId = AccessToken.getCurrentAccessToken().getUserId();
 
-        // Initilize the Views
+        // Initialize all the Views
         initViews();
 
         // make the API call
         getUserInfo(UserId);
         getAllAlbums(UserId);
 
+        // Logout button Click
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logout();
+            }
+        });
+
 
         // Listen for a click on the list view
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        albumGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long l) {
                 // get the clicked Album and pass it's ID to the Album Activity to display the photos of the album
                 Album album = (Album) parent.getItemAtPosition(position);
                 Intent intent = new Intent(MainActivity.this , AlbumActivity.class);
                 intent.putExtra("id",album.getId());
+                startActivity(intent);
             }
         });
     }
 
+    // Initialize all Views
     private void initViews() {
         userName = (TextView)findViewById(R.id.userName);
-        listview = (ListView) findViewById(R.id.Listview);
+        albumGrid = (GridView) findViewById(R.id.albumGrid);
+        btnLogout = (Button) findViewById(R.id.btnLogout);
     }
-
 
     // Go to the login Activity
     private void goToLoginScreen() {
@@ -99,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                             // Get the response and parse the data into a JSONObject Object
                             JSONObject data = response.getJSONObject();
                             // Set the TextView Text attribute to the user name
-                            userName.setText(data.get("name").toString() + "\n" + data.get("email").toString());
+                            userName.setText("Welcome : "+data.get("name").toString());
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -137,10 +142,10 @@ public class MainActivity extends AppCompatActivity {
                             }
 
                             // Set the adapter with the Data that we Got from the API
-                            list_Adapter = new List_Adapter(MainActivity.this,albums);
+                            gridAdapter = new Grid_Adapter(MainActivity.this,albums);
 
                             // Set the List view's adapter
-                            listview.setAdapter(list_Adapter);
+                            albumGrid.setAdapter(gridAdapter);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

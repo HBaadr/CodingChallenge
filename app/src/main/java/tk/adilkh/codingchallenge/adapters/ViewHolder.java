@@ -9,8 +9,6 @@ import android.widget.TextView;
  */
 
 public class ViewHolder {
-    ImageView _bg ;
     ImageView _grid_item_image ;
     TextView _grid_item_title ;
-    View _vw_blayer;
 }
