@@ -3,6 +3,9 @@ package tk.adilkh.codingchallenge.activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -11,13 +14,16 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.fujiyuu75.sequent.Animation;
+import com.fujiyuu75.sequent.Sequent;
+
 import tk.adilkh.codingchallenge.R;
 
 public class LoginActivity extends AppCompatActivity {
 
     private LoginButton loginButton;
-    private String TAG ="ADIL";
     private CallbackManager callbackManager ;
+    private LinearLayout lay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +39,12 @@ public class LoginActivity extends AppCompatActivity {
         // Views initialisation
         callbackManager =  CallbackManager.Factory.create();
         loginButton = (LoginButton) findViewById(R.id.login_button);
+        lay = (LinearLayout) findViewById(R.id.layout);
+
+
+        // Animations
+        Sequent.origin(lay).anim(getApplicationContext(), Animation.FADE_IN_UP).start();
+
 
         // Set permissions for facebook login
         loginButton.setReadPermissions("email");
